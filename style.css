@@ -1,0 +1,89 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 2.5rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #000;
+  font-family: Arial, sans-serif;
+  color: #fff;
+}
+
+.search-container {
+  width: 90%;
+  max-width: 22rem;
+  margin-bottom: 2.5rem;
+}
+.search-container input {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  background: #1a1a1a;
+  border: none;
+  border-radius: 0.75rem;
+  color: #ccc;
+  font-size: 1rem;
+  outline: none;
+}
+
+.cards {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  gap: 2rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.card {
+  width: 90%;
+  max-width: 22rem;
+  height: 15.25rem;
+  border-radius: 2rem;
+  overflow: hidden;
+  position: relative;
+  background: #222;
+  box-shadow: 0 0.625rem 2.5rem rgba(0, 0, 0, 0.45);
+  transition: transform 0.3s ease;
+}
+.card:hover {
+  transform: scale(1.03);
+}
+.card img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.card .info {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 2.5rem 1.6rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+}
+.card .info .name {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+.card .info .desc {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  opacity: 0.9;
+}
+
+.card:hover {
+  cursor: pointer;
+}/*# sourceMappingURL=style.css.map */
