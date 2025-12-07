@@ -1,49 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Profile Card UI</title>
-
-    <!-- SEO Meta -->
-    <meta name="description" content="Explore amazing user profiles with Profile Card UI. Search, discover, and enjoy unique bios and avatars." />
-    <meta name="keywords" content="profile cards, user profiles, UI, JavaScript, CSS, web app" />
-    <meta name="author" content="Ritam Maty" />
-    <meta name="theme-color" content="#0a0a0a" />
-
-    <!-- Open Graph / Social Sharing -->
-    <meta property="og:title" content="Profile Card UI" />
-    <meta property="og:description" content="Discover and search amazing user profiles with avatars and bios!" />
-    <meta property="og:image" content="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&auto=format&fit=crop&q=60" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://yourwebsite.com" />
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Profile Card UI" />
-    <meta name="twitter:description" content="Discover and search amazing user profiles with avatars and bios!" />
-    <meta name="twitter:image" content="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&auto=format&fit=crop&q=60" />
-
-    <!-- Favicon -->
-    <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSciadGusdgkRbU4YK4vwpM6B2XzPzALvKF7g&s" type="image/png" />
-
-    <!-- Compiled CSS -->
-    <link rel="stylesheet" href="style.css" >
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css"
+    rel="stylesheet"
+/>
 </head>
-
 <body>
+     <div class="form-container">
+        <h2>New Call</h2>
+        <form>
+            <label>Image URL</label>
+            <input required type="text" placeholder="https://example.com/photo.jpg" />
 
-    <!-- Search Bar -->
-    <div class="search-container">
-        <input class="inp" type="text" id="search" placeholder="Search..." />
+            <label>Full Name</label>
+            <input required type="text" placeholder="Enter full name" />
+
+            <label>Home Town</label>
+            <input required type="text" placeholder="Enter home town" />
+
+            <label>Purpose</label>
+            <input required type="text" placeholder="e.g., Quick appointment note" />
+
+            <label>Category</label>
+            <label class="tag-checkbox">
+                <input required type="radio" name="category" value="emergency" />
+                <span>Emergency</span>
+            </label>
+
+            <label class="tag-checkbox">
+                <input required type="radio" name="category" value="important" />
+                <span>Important</span>
+            </label>
+
+            <label class="tag-checkbox">
+                <input required type="radio" name="category" value="urgent" />
+                <span>Urgent</span>
+            </label>
+
+            <label class="tag-checkbox">
+                <input required type="radio" name="category" value="no-rush" />
+                <span>No Rush</span>
+            </label>
+
+            <button class="submit-btn">Create Note</button>
+        </form>
+        <button class="closeForm">close</button>
+    </div>
+    <div class="note-container">
+        <div class="left-icons">
+            <button id="add-note"><i class="ri-add-line"></i></button>
+            <button id="upBtn"><i class="ri-arrow-up-line"></i></button>
+            <button id="downBtn"><i class="ri-arrow-down-line"></i></button>
+        </div>
+
+        <div class="stack">
+
+        </div>
+
+        <div class="right-colors">
+            <span class="dot black"></span>
+            <span class="dot purple"></span>
+            <span class="dot orange"></span>
+            <span class="dot teal"></span>
+        </div>
     </div>
 
-    <!-- Card -->
-    <div class="cards">
-        
-    </div>
-
-    <!-- JavaScript -->
     <script src="script.js"></script>
 </body>
 </html>

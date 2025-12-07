@@ -1,68 +1,160 @@
-// -----------------------------------------------------------------------------
-// USERS DATA
-// -----------------------------------------------------------------------------
-const users = [
-    { userName: "ritam maty", pic:"https://plus.unsplash.com/premium_photo-1764715276966-599bbc8566b2?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw3MHx8fGVufDB8fHx8fA%3D%3D", bio: "I love my family" },
-    { userName: "rock maty", pic: "https://images.unsplash.com/photo-1761839259484-4741afbbdcbf?w=600&auto=format&fit=crop&q=60", bio: "I love my family" },
-    { userName: "Sophia Turner", pic: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&auto=format&fit=crop&q=60", bio: "Enjoying sunshine and art 🎨" },
-    { userName: "Ethan Brooks", pic: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&auto=format&fit=crop&q=60", bio: "Coffee lover ☕ & hobby photographer 📸" },
-    { userName: "Maya Rivera", pic:"https://images.unsplash.com/photo-1764617988939-034265354ad6?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw3OHx8fGVufDB8fHx8fA%3D%3D", bio: "Travel addict ✈️ Nature is my home 🌿" },
-    { userName: "Noah Williams", pic: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&auto=format&fit=crop&q=60", bio: "Gym 💪 | Books 📚 | Peace ✨" },
-    { userName: "Ava Mitchell", pic: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&auto=format&fit=crop&q=60", bio: "I love meeting new people ❤️" },
-    { userName: "Liam Carter", pic: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&auto=format&fit=crop&q=60", bio: "Always chasing goals 🔥" },
-    { userName: "Emma Collins", pic: "https://plus.unsplash.com/premium_photo-1764501818547-52daac608a44?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw4NHx8fGVufDB8fHx8fA%3D%3D", bio: "Dreaming big & smiling always 😊" }
-];
+// ========================================
+// DOM ELEMENTS
+// ========================================
+const plusBtn = document.querySelector(".note-container > .left-icons > #add-note");
+const formContainer = document.querySelector(".form-container");
+const closeFormBtn = document.querySelector(".form-container > .closeForm");
+const form = document.querySelector("form");
 
-// -----------------------------------------------------------------------------
-// FUNCTION: createUserCards
-// -----------------------------------------------------------------------------
-function createUserCards(arr) {
-    const container = document.querySelector(".cards");
-    container.innerHTML = arr.map(user => `
-        <div class="card">
-            <img src="${user.pic}" alt="${user.userName}" />
-            <div class="info">
-                <div class="name">${user.userName}</div>
-                <div class="desc">${user.bio}</div>
-            </div>
-        </div>
-    `).join('');
+// Input fields
+const imageInput = document.querySelector('input[placeholder="https://example.com/photo.jpg"]');
+const nameInput = document.querySelector('input[placeholder="Enter full name"]');
+const townInput = document.querySelector('input[placeholder="Enter home town"]');
+const purposeInput = document.querySelector('input[placeholder="e.g., Quick appointment note"]');
+
+// Radio buttons for category
+const categoryInputs = document.querySelectorAll('input[name="category"]');
+
+// ========================================
+// SHOW / HIDE FORM
+// ========================================
+plusBtn.addEventListener("click", () => {
+    formContainer.style.visibility = "visible";
+    formContainer.style.opacity = "1";
+});
+
+function closeForm() {
+    formContainer.style.visibility = "hidden";
+    formContainer.style.opacity = "0";
+}
+closeFormBtn.addEventListener("click", closeForm);
+
+// ========================================
+// SAVE DATA TO LOCALSTORAGE
+// ========================================
+function setLocalStorage(obj) {
+    let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+    tasks.push(obj);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
-// -----------------------------------------------------------------------------
-// INITIALIZE CARDS
-// -----------------------------------------------------------------------------
-createUserCards(users);
+// ========================================
+// FORM SUBMISSION & VALIDATION
+// ========================================
+form.addEventListener("submit", function (e) {
+    e.preventDefault();
 
-// -----------------------------------------------------------------------------
-// SEARCH / FILTER FUNCTIONALITY
-// -----------------------------------------------------------------------------
-document.querySelector(".inp").addEventListener("input", (e) => {
-    const text = e.target.value.toLowerCase();
+    // Regex patterns
+    const imageRegex = /^(https?:\/\/)([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/i;
+    const nameRegex = /^[A-Za-z ]{3,}$/;
+    const townRegex = /^[A-Za-z ]{2,}$/;
+    const purposeRegex = /^.{5,}$/;
 
-    const filteredUsers = users.filter(user =>
-        //! IF NO MATCH TO USER SERCH IT WILL RETURN FALUSE 
-        user.userName.toLowerCase().startsWith(text)
-    );
-    //! FALUSE == [] 
-    //! CONDITION BECOME USE FULL   
-     
-    if (filteredUsers.length > 0) {
-        createUserCards(filteredUsers);
-    } else {
-        noUserFound();
-    }
+    // Validation checks
+    if (!imageInput.value.trim()) return alert("Image URL is required");
+    if (!imageRegex.test(imageInput.value.trim())) return alert("Enter a valid image URL");
+    if (!nameRegex.test(nameInput.value.trim())) return alert("Name must be letters only (min 3)");
+    if (!townRegex.test(townInput.value.trim())) return alert("Town must be letters only");
+    if (!purposeRegex.test(purposeInput.value.trim())) return alert("Purpose must be at least 5 characters");
+
+    // Get selected category
+    const selectedCategory = document.querySelector('input[name="category"]:checked')?.value;
+    if (!selectedCategory) return alert("Please select a category");
+
+    // Create data object
+    const formData = {
+        image: imageInput.value.trim(),
+        name: nameInput.value.trim(),
+        town: townInput.value.trim(),
+        purpose: purposeInput.value.trim(),
+        category: selectedCategory
+    };
+
+    // Save to localStorage
+    setLocalStorage(formData);
+
+    // Instantly show the new card
+    newCard(formData);
+
+    // Reset and close form
+    form.reset();
+    closeForm();
 });
-function noUserFound() {
-    const container = document.querySelector(".cards");
-    container.innerHTML = `
-        <div class="card">
-            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJ0AAACUCAMAAAC+99ssAAAANlBMVEXm5uampqbd3d2goKCjo6Pp6enh4eGwsLDa2trW1tbBwcG1tbWqqqqtra3FxcW5ubnLy8uZmZlHD2DiAAADH0lEQVR4nO2b23LjIAxAjY1sTHzr//9sIfZus5v4gpCEZ6rz0k6fzgCykFCrSlEURVEURVEURVEURZEFAj8/7kQwat0yTd77aVpceyPDINL7zhhjV8Jvne+ffy8POD82UekV24zeldeDdjb/q22CZm7L+kE9vy3b6wLOdUE/WIZ9t6ffsJTSg+px7Pb0e5SJDnDduVzQ60pEB7idaHjTM/J60F9SW+mF9aBOkDNGOHTT5IKeqN2FaH0lRK4cMDWJa9dMYnsLdapc0JM7eon7GhHbW1jS5YKeUE6DEWU3ithBn37qIo3INxk6lFy4MAvYJaWwf5FYvAlz6iJ24pfDfE42O4GPSmqGfYU922IjNsIftYA+dvHgsdvNGXYzu92IljOGP10MGXYDt1ybZddy22XIGfPL7W69s/eOint/UQB9CYjXAHY7n2Hn2e1ufQuo6oy1E+hXXOrafZTr+OUq9MGznl/u5lVPha4YBdwqWJDVtkyrApBrJ9RHQZUW/EXFRos5eR37/WQDky9kejyrXnJhxl+OvdAmJgwrtq8RcIl2ss890KfoWfHHnoTmsVTLGKVXQC5u7snT8eY2SG/rptdeaL7bsdxwwHRqJ9GN3QHAHZe3gys2NgOV8/ZkasF6V2ouwF94e7emxNQMtPPJuv2sn/TUDFTLxZmFdf0Wye0Fl/y2Lbi9y8F40Y5eswi54VopMje8kCGQNZlA1riUvnZWj10P6kupf0dv4B1dCJkLLxf1OEMXqiy5qMf44Ustdj7o8ZU/OS94f/W4Pizp80WfYJo5OrvLXYUpMrIP3QpLg5ZmXyMMexs+w0RyYW/pP8oE8foHO1PLJTZOTvQcrRwQhcRmRzsSldpzOtWj/aoQnrqnHenJIwzYlYHwyQz7RLEP5eMFZF6c3rEDnV1LvXRh8chuUjmTWbt2dOnsQS5nDNmoYJszR7HHSLS1GS+yR1A1bFGz2WdYqtZFxpDHgR3ROzxFsfPBjqr8QfcmDu1GGrmKwS1CI8eQKSJE2QLxnyiX7GiuKWqHx301HHwRlT41DzRyiqIoiqIoivIr+Ab1mSaZ9XplKwAAAABJRU5ErkJggg==" alt="No User" />
+
+// ========================================
+// DISPLAY ALL SAVED CARDS (on page load)
+// ========================================
+function createCard() {
+    const stack = document.querySelector(".stack");
+    const tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+
+    stack.innerHTML = ""; // Clear previous cards to avoid duplicates
+
+    if (tasks.length === 0) return;
+
+    tasks.forEach(data => {
+        const card = document.createElement("div");
+        card.className = "card";
+
+        card.innerHTML = `
+            <img class="avatar" src="${data.image}" 
+                 onerror="this.src='https://via.placeholder.com/50/ccc/666?text=No+Img'" alt="Avatar">
+            <h2>${data.name.toUpperCase()}</h2>
             <div class="info">
-                <div class="name">No User Found</div>
-                <div class="desc">Try searching with a different username.</div>
+                <span>${data.town}</span>
+                <span>${data.category}</span>
             </div>
+            <p style="margin:12px 0; color:#555; font-size:14px;">${data.purpose}</p>
+            <div class="buttons">
+                <button class="call">Delete</button>
+                <button class="msg">Edit</button>
+            </div>
+        `;
+
+        // Delete (only from UI for now)
+        card.querySelector(".call").addEventListener("click", () => card.remove());
+        // Edit (just logs for now)
+        card.querySelector(".msg").addEventListener("click", () => console.log("Edit:", data));
+
+        stack.prepend(card);
+    });
+}
+
+// ========================================
+// ADD SINGLE NEW CARD (instantly after submit)
+// ========================================
+function newCard(data) {
+    const stack = document.querySelector(".stack");
+
+    const card = document.createElement("div");
+    card.className = "card";
+
+    card.innerHTML = `
+        <img class="avatar" src="${data.image}" 
+             onerror="this.src='https://via.placeholder.com/50/ccc/666?text=No+Img'" alt="Avatar">
+        <h2>${data.name.toUpperCase()}</h2>
+        <div class="info">
+            <span>${data.town}</span>
+            <span>${data.category}</span>
+        </div>
+        <p style="margin:12px 0; color:#555; font-size:14px;">${data.purpose}</p>
+        <div class="buttons">
+            <button class="call">Delete</button>
+            <button class="msg">Edit</button>
         </div>
     `;
+
+    card.querySelector(".call").addEventListener("click", () => card.remove());
+    card.querySelector(".msg").addEventListener("click", () => console.log("Edit:", data));
+
+    stack.prepend(card); // Add new card on top
 }
 
+// ========================================
+// LOAD ALL CARDS WHEN PAGE LOADS
+// ========================================
+
+document.addEventListener("DOMContentLoaded", () => {
+    createCard();
+});
+//! up and arrow key is panding 

@@ -1,3 +1,16 @@
+// _variables.scss (you can split if needed)
+$primary: #1a1a1a;
+$purple: #a855f7;
+$orange: #fb923c;
+$teal: #14b8a6;
+$bg-gradient: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+
+$shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.08);
+$shadow-md: 0 10px 30px rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.15);
+$radius-lg: 20px;
+$radius-full: 9999px;
+
 * {
   margin: 0;
   padding: 0;
@@ -7,91 +20,255 @@
 html, body {
   width: 100%;
   height: 100%;
+  font-family: "Helvetica Now Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
-// GLOBAL STYLES
+
 body {
-  margin: 0;
-  padding: 2.5rem 0;
+  background: $bg-gradient;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.note-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  position: relative;
+  // background-color: gray;
+}
+
+// Left Icons
+.left-icons {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  background: #000;
-  font-family: Arial, sans-serif;
-  color: #fff;
-}
+  gap: 1rem;
 
-// SEARCH BAR
-.search-container {
-  width: 90%;
-  max-width: 22rem;
-  margin-bottom: 2.5rem;
-
-  input {
-    width: 100%;
-    padding: 1rem 1.25rem;
-    background: #1a1a1a;
+  button {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: white;
     border: none;
-    border-radius: 0.75rem;
-    color: #ccc;
-    font-size: 1rem;
-    outline: none;
+    box-shadow: $shadow-sm;
+    cursor: pointer;
+    font-size: 20px;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
   }
 }
 
-// CARDS WRAPPER
-.cards {
-  width: 100%;
+// Color Dots
+.right-colors {
   display: flex;
-  justify-content: center;
-  flex-direction: row;
-  gap: 2rem;
-  align-items: center;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 14px;
 }
 
-// CARD COMPONENT
-.card {
-  width: 90%;
-  max-width: 22rem;
-  height: 15.25rem;
-  border-radius: 2rem;
-  overflow: hidden;
-  position: relative;
-  background: #222;
-  box-shadow: 0 0.625rem 2.5rem rgba(0, 0, 0, 0.45);
+.dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  box-shadow: $shadow-sm;
   transition: transform 0.3s ease;
+  cursor: pointer;
 
   &:hover {
-    transform: scale(1.03);
+    transform: scale(1.2);
   }
 
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  &.black { background: $primary; }
+  &.purple { background: $purple; }
+  &.orange { background: $orange; }
+  &.teal { background: $teal; }
+}
+
+// Card Stack
+.stack {
+  position: relative;
+  width: 340px;
+  height: 220px;
+  // background-color: blue;
+}
+
+.card {
+  position: absolute;
+  inset: 0;
+  background: white;
+  border-radius: $radius-lg;
+  padding: 24px;
+  box-shadow: $shadow-md;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:nth-child(1) { z-index: 3; }
+  &:nth-child(2) { 
+    z-index: 2; 
+    transform: translateY(12px) scale(0.98);
+    opacity: 0.95;
   }
-
-  // INFO SECTION
-  .info {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    padding: 2.5rem 1.6rem;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
-
-    .name {
-      font-size: 1.4rem;
-      font-weight: bold;
-      margin-bottom: 0.5rem;
-    }
-
-    .desc {
-      font-size: 0.875rem;
-      line-height: 1.4;
-      opacity: 0.9;
-    }
+  &:nth-child(3) { 
+    z-index: 1; 
+    transform: translateY(24px) scale(0.96);
+    opacity: 0.8;
   }
 }
-.card:hover{
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 12px;
+  border: 3px solid white;
+  box-shadow: $shadow-sm;
+}
+
+h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: $primary;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+button.call, button.msg {
+  padding: 10px 20px;
+  border-radius: $radius-full;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button.call {
+  background: $primary;
+  color: white;
+
+  &:hover {
+    background: #000;
+    transform: translateY(-2px);
+  }
+}
+
+button.msg {
+  background: #f1f5f9;
+  color: $primary;
+
+  &:hover {
+    background: #e2e8f0;
+    transform: translateY(-2px);
+  }
+}
+
+// Form Modal
+.form-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  z-index: 9999;
+  background: white;
+  padding: 2rem;
+  border-radius: 24px;
+  width: 90%;
+  max-width: 420px;
+  box-shadow: $shadow-lg;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+
+  &.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: $primary;
+  }
+
+  label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  input[type="text"],
+  input[type="email"] {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 16px;
+    border: 1.5px solid #e2e8f0;
+    font-size: 15px;
+    transition: all 0.3s ease;
+
+    &:focus {
+      outline: none;
+      border-color: $purple;
+      box-shadow: 0 0 0 4px rgba($purple, 0.1);
+    }
+  }
+
+  .submit-btn,
+  .closeForm {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: $radius-full;
+    font-weight: 600;
+    font-size: 15px;
     cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+  }
+
+  .submit-btn {
+    background: $primary;
+    color: white;
+
+    &:hover {
+      background: #000;
+      transform: translateY(-2px);
+    }
+  }
+
+  .closeForm {
+    background: #ef4444;
+    color: white;
+
+    &:hover {
+      background: #dc2626;
+    }
+  }
 }
